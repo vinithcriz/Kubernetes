@@ -1,0 +1,13 @@
+kubectl create -f deployment.yml
+kubectl describe deployment rss-site
+kubectl get deployments
+kubectl get pods
+kubectl expose deployment rss-site --type NodePort --port 80
+kubectl get svc 
+minikube ip       or minikube service rss-site --url 
+curl url
+
+kubectl delete -f deployment.yml
+kubectl get pods
+kubectl get deployments
+

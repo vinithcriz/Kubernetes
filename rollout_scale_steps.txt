@@ -1,0 +1,63 @@
+Deployment Strategies -- upgrading application 
+   ecomm 1.0  --  ecomdep-- 10 pods -- ecomm 1.0
+   ecomm 2.0  --  ecomdep -- 10 pods -- ecom 2.0 
+   
+   deployment -- application - downtime 
+   zero downtime -- deployment stategy 
+
+different types : rolling upgrade, recreate, canary ...
+                     25%
+
+A rollingupdate deployment is the default deployment strategy in Kubernetes. It replaces the existing version of pods with a new version, updating pods slowly one by one, without application downtime.
+
+
+
+Demo : 
+kubectl create deployment hellonginx --image=nginx:1.8 --replicas=4
+kubectl get pods
+kubectl get deployment hellonginx -o yaml
+kubectl rollout status deployment/hellonginx
+kubectl rollout history deployment/hellonginx    
+watch -n1 kubectl get pods -o wide 
+
+duplicate window
+kubectl set image deployment/hellonginx nginx=nginx:1.16
+
+kubectl rollout status deployment/hellonginx
+kubectl rollout history deployment/hellonginx 
+
+kubectl get deployment hellonginx -o yaml
+
+    
+kubectl rollout undo deployment/hellonginx
+kubectl rollout history deployment/hellonginx
+
+kubectl set image deployment/hellonginx nginx=nginx:1.16 --record
+
+kubectl rollout history deployment/hellonginx
+
+
+kubectl delete deployment hellonginx
+kubectl get pods
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

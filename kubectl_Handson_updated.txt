@@ -1,0 +1,75 @@
+Demo 1
+kubectl create deployment dep1 --image httpd --replicas 3
+kubectl get deployments 
+kubectl get deployments -o wide
+kubectl get pods
+kubectl get pods -o wide 
+kubectl describe deployment dep1
+kubectl describe pod podid 
+kubectl logs podid 
+kubectl get services 
+kubectl expose deployment dep1 --type NodePort --port 80    
+
+kubectl port-forward services/dep1 7001:80
+
+
+
+=======================================================
+Demo 2 :
+kubectl get pods
+kubectl exec -it podid -- bash 
+   cd htdocs 
+   echo "Welcome to Kubernetes">index.html
+   exit
+
+
+kubectl port-forward services/dep1 7001:80
+
+open a dublicate putty session 
+curl localhost:7001
+
+kubectl delete deployment dep1
+kubectl delete svc dep1
+===========================================
+demo 3
+kubectl create deployment apache1 --image httpd --replicas 3
+kubectl get deployment 
+kubectl get pods 
+kubectl expose deployment apache1 --type NodePort --port 80
+
+curl ipaddress:port 
+
+kubectl delete pod podid
+kubectl get pods 
+
+kubectl scale deployment apache1 --replicas 2
+================================
+Demo 4 
+kubectl get pods -n kube-system
+
+-n -- namespace 
+
+=============================================
+demo 5 
+
+kubectl create deployment springhello --image ksashi/springhelloamdocs:1.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

@@ -1,0 +1,45 @@
+Metrics Server is a cluster-wide aggregator of resource usage data. It collects metrics like CPU or memory consumption for containers or nodes, from the Summary API, exposed by Kubelet on each node.
+
+METRIC SERVER INSTALLATION(optional)
+**************************
+Latest Metrics Server release can be installed by running:
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+Edit the metric server deployment in kube-system namespace.
+
+$ kubectl edit deployments.apps -n kube-system metrics-server 
+
+spec:
+      containers:
+      - args:
+        - --cert-dir=/tmp
+        - --secure-port=4443
+
+        - --kubelet-insecure-tls=true                                    
+        - --kubelet-preferred-address-types=InternalIP
+================================================================================================================================
+minikube 
+   minikube addons enable metrics-server 
+   kubectl top pods
+
+
+
+
+kubectl get pods -n kube-system | grep metrics-server
+============================================================
+kubectl apply -f hpa.yml 
+or 
+kubectl autoscale deployment hpa-example --cpu-percent=50 --min=1 --max=5
+
+watch n1 kubectl get all 
+
+
+new window 
+
+kubectl exec -it podid -- bash 
+
+apt update 
+apt install stress -y 
+ 
+stress --vm 2 --vm-bytes 200M  

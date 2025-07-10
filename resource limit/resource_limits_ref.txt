@@ -1,0 +1,131 @@
+Resource Limits 
+
+Quota, Request and Limit 
+
+Quota  -- Application for Namespace level 
+        -- count-- K8s Object,
+        -- h/w resources 		Memory, Cpu ...
+		
+1. Count - Kubernetes Object -- No of ojects the Namespace can have 
+
+quota-count.yml
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota-demo1
+  namespace: demo-ns
+spec:
+  hard:
+    pods: "2"
+	
+kubectl create namespace demo-ns 
+kubectl get ns
+kubectl -n demo-ns get all
+kubectl apply -f quota-count.yml
+kubectl get ResourceQuota -n demo-ns
+kubectl create deployment dep1 --image httpd -n demo-ns 
+kubectl -n demo-ns get quota
+kubectl create deployment dep2 --image httpd --replicas 2 -n demo-ns 
+kubectl -n demo-ns get quota
+
+kubectl delete -f quota-count.yml
+
+
+
+Quota-memory.yml  
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota-demo-mem
+  namespace: demo-ns
+spec:
+  hard:
+    limits.memory: "500Mi" 
+	
+	
+   	
+	
+kubectl apply -f Quota-memory.yml
+kubectl get ResourceQuota -n demo-ns
+=================================================================
+pod.yml 
+
+apiVersion: v1          
+kind: Pod
+metadata:
+  name: nginx
+  namespace: demo-ns
+spec:
+  containers:
+  - image: nginx
+    name: nginx               
+	
+	The above will not create a pod - it will give an error message 
+
+   
+==========================================================================pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: demo-ns
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+       limits:
+         memory: "100Mi"          
+		 
+		 This should work fine 
+kubectl apply -f pod.yml		 
+kubectl -n demo-ns get quota
+
+=====================================================
+limitrange.yml
+
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limitrange         
+  namespace: demo-ns
+spec:
+  limits:
+  - default:
+      memory: 200Mi   
+    defaultRequest:
+      memory: 50Mi
+    type: Container
+    
+kubectl apply -f  limitrange.yml
+=================================================
+
+After executing limit-range.yml file the below pod.yml file should not show any error
+
+pod1.yml 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd1
+  namespace: demo-ns
+spec:
+  containers:
+  - image: httpd
+    name: httpd1
+	       
+	
+
+
+kubectl apply -f pod1.yml
+kubectl -n demo-ns get quota	
+	The above will create a pod 
+		 
+		 
+
+==================================================================
+
+

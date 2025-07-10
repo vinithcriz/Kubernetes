@@ -1,0 +1,20 @@
+kubectl create deployment hellonginx --image=nginx:1.16  --replicas 4
+kubectl get pods
+export KUBE_EDITOR=nano
+kubectl edit deployment hellonginx
+# change the number of replicas to 6
+spec:
+	replicas: 6
+Ctrl+O+Enter
+Ctrl+X
+
+kubectl get pods
+kubectl rollout status deployment/hellonginx
+kubectl set image  deployment/hellonginx nginx=nginx:1.8
+kubectl rollout status deployment/hellonginx
+kubectl get pods -w
+kubectl rollout history deployment/hellonginx
+kubectl describe deployment hellonginx
+kubectl rollout undo deployment/hellonginx
+kubectl get pods -w
+kubectl describe deployment hellonginx
